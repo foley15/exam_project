@@ -218,7 +218,7 @@ button:hover {
 
 
 /*Mobile view*/
-@media (max-width: 412px) {
+@media (max-width: 300px) {
     body {
         padding: 10px;
     }
