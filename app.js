@@ -252,6 +252,7 @@ window.addEventListener('load', () => {
         }, (error) => {
             // If user denies permission, or location fails
             hideLoading()
+            loadDefaultCity(defaultCity)
             console.log("Geolocation rejected or failed:", error.message)
         });
     } else {
@@ -261,21 +262,22 @@ window.addEventListener('load', () => {
     }
 });
 
-async function getLocalWeatherData(latitude, longitude) {
+async function getLocalWeatherData(lat, lon) {
     let cityName = "Your Location"
     let countryName = "Local"
 
     try {
         // 1. Ask Open-Meteo's reverse geocoding API what city matches these coordinates
-        const reverseGeocodeURL = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+        const reverseGeocodeURL = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
         
         const geoResponse = await fetch(reverseGeocodeURL)
         if (geoResponse.ok) {
             const geoData = await geoResponse.json()
+            console.log(geoData)
             
             // Extract city/town/village and country safely from the address object
             const address = geoData.address;
-            cityName = address.city || address.town || address.village || "Unknown City"
+            cityName = address.city || address.town || address.village || address.amenity || address.neighbourhood ||"Unknown City"
             countryName = address.country || ""
         }
     } catch (e) {
@@ -283,7 +285,7 @@ async function getLocalWeatherData(latitude, longitude) {
     }
 
     // 2. Fetch the weather data just like before
-    const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,uv_index,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto`
+    const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,uv_index,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto`
 
     const result = await fetch(weatherURL)
     if (!result.ok) {
@@ -292,23 +294,23 @@ async function getLocalWeatherData(latitude, longitude) {
     
     const finalWeatherData = await result.json()
 
-    // 3. Put the REAL city and country names we just looked up into our simulated mask
+    // 3. We put the real city and country names we just looked up into our simulated data
     const simulatedData = {
         results: [{
             name: cityName,
             country: countryName,
-            latitude: latitude,
-            longitude: longitude
+            latitude: lat,
+            longitude: lon
         }]
     };
 
-    // 4. Send it off to your original display function!
+    // 4. We pass the simulated data to our original display function!
     displayWeatherInfo(simulatedData)
 }
 
 async function loadDefaultCity(defaultCity) {
     try {
-        // Reuses the exact search pipeline you already built!
+        // We reuse the search function already built!
         const weatherData = await getWeatherData(defaultCity);
         displayWeatherInfo(weatherData);
     } catch (error) {
