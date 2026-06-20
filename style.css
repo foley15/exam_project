@@ -277,20 +277,24 @@ button:hover {
     }
 
     .weather-icon {
-        font-size: 2rem;
+        font-size: 1.5rem;
         padding: 7px;
         padding-bottom: 2px;
+        padding-top: 5px;
     }
 
     .cityDisplay {
+        font-size: 1.3rem;
         padding-bottom: 5px;
     }
 
     .tempDisplay {
+        font-size: 1.5rem;
         padding-bottom: 7px;
     }
     .descDisplay {
-        padding-bottom: 30px;
+        padding-bottom: 15px;
+        font-size: 0.8rem;
     }
 
     .humidityDisplay, .windDisplay, .uvDisplay {
@@ -323,7 +327,6 @@ button:hover {
         width: 100%;
         font-size: 1rem;
         padding-inline: 5px;
-        margin-bottom: 0px;
         flex: 1;
         min-height: 0;
         overflow-y: auto;
@@ -333,7 +336,7 @@ button:hover {
         width: 100%;
         font-size: 1rem;
         gap: 0 !important; 
-        padding: 1px 7px;
+        padding: 3px 7px;
     }
 
     .day {
