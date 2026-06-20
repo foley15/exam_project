@@ -131,7 +131,7 @@ async function displayWeatherInfo(data) {
             dayName = 'Today';
         } else {
             // Convert date strings ("2026-06-16") to readable day names
-            const dateObj = new Date(time[i+1]);
+            const dateObj = new Date(time[i]);
             dayName = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
         }
 

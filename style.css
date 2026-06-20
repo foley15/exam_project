@@ -16,7 +16,8 @@ body {
 
 .weather-app {
     margin-top: 30px;
-    width: 650px;
+    max-width: 650px;
+    width: 100%;
     text-align: center;
     background-color: white;
     border-radius: 10px;
@@ -44,7 +45,8 @@ body {
 
 input {
     font-size: 2rem;
-    width: 500px;
+    max-width: 500px;
+    width: 100%;
     padding-left: 10px;
     border-radius: 8px;
     border: 1px solid hsla(0, 0%, 0%, 0.201);
@@ -74,7 +76,8 @@ button:hover {
     background-color: #2E86AB;
     color: white;
     border-radius: 10px;
-    width: 620px;
+    max-width: 620px;
+    width: 100%;
     margin: auto;
     font-size: 1.5rem;
     margin-bottom: 10px;
@@ -130,7 +133,8 @@ button:hover {
     display: flex;
     border-radius: 10px;
     border: 1px solid #d1e2f3;
-    width: 620px;
+    max-width: 620px;
+    width: 100%;
     margin: auto;
     font-size: 1rem;
     padding-block: 20px;
@@ -168,11 +172,11 @@ button:hover {
 
 .days {
     display: flex;
-    flex: 1;
     gap: 60px;
     align-items: center;
     border: 1px solid #ecf2f8;
-    width: 620px;
+    max-width: 620px;
+    width: 100%;
     margin: auto;
     border-radius: 10px;
     font-size: 1.1rem;
@@ -243,7 +247,7 @@ button:hover {
     }
 
     button {
-        width: 30%;
+        width: 100%;
         font-size: 16px;
     }
 
@@ -263,11 +267,4 @@ button:hover {
     margin-bottom: 10px;
     padding-bottom: 10px;
 }
-    .forcast-days {
-        width: 100%;
-    }
-
-    .days {
-        width: 100%;
-    }
 }
