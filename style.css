@@ -172,7 +172,7 @@ button:hover {
 
 .days {
     display: flex;
-    gap: 60px;
+    justify-content: space-between;
     align-items: center;
     border: 1px solid #ecf2f8;
     max-width: 620px;
@@ -180,7 +180,7 @@ button:hover {
     margin: auto;
     border-radius: 10px;
     font-size: 1.1rem;
-    padding: 10px 5px;
+    padding: 12px 20px;
     margin-bottom: 10px;
     background-color: #FAFCFE;
     cursor: pointer;
@@ -191,7 +191,7 @@ button:hover {
     background-color: #eaf0f8;
 }
 .day {
-    flex: 1;
+    width: 35%;
     text-align: start;
     padding-left: 10px;
     color: #1A3C5E;
@@ -199,11 +199,11 @@ button:hover {
 }
 
 .weather-day {
-    flex: 1;
+    text-align: center;
 }
 
 .tempDay {
-    flex: 1;
+    text-align: end;
 }
 
 .forcast-days {
@@ -254,7 +254,7 @@ button:hover {
     .weather {
         width: 100%;
         border: none;
-        flex-direction: column;
+        flex-direction: column !important;
     }
 
     .humidity, .wind, .uv {
@@ -267,4 +267,14 @@ button:hover {
     margin-bottom: 10px;
     padding-bottom: 10px;
 }
+
+.forcast-days {
+    width: 100%;
+    padding-inline: 10px;
+    }
+
+    .days {
+        width: 100%;
+        gap: 50px !important; /* To lower the gap so items don't overflow horizontally */
+    }
 }
