@@ -257,7 +257,7 @@ window.addEventListener('load', () => {
     } else {
         console.log("Geolocation not supported. Loading default city:", defaultCity)
         hideLoading()
-        loadDefaultCity()
+        loadDefaultCity(defaultCity)
     }
 });
 
