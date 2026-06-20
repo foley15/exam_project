@@ -53,10 +53,6 @@ input {
     border: 1px solid hsla(0, 0%, 0%, 0.201);
 }
 
-input::placeholder {
-    /* padding-left: 10px; */
-}
-
 button {
     font-size: 1.5rem;
     padding: 10px 20px;
