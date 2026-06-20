@@ -277,9 +277,18 @@ button:hover {
     }
 
     .weather-icon {
+        font-size: 2rem;
         padding: 7px;
+        padding-bottom: 2px;
     }
 
+    .cityDisplay {
+        padding-bottom: 5px;
+    }
+
+    .tempDisplay {
+        padding-bottom: 7px;
+    }
     .descDisplay {
         padding-bottom: 30px;
     }
