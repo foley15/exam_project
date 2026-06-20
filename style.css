@@ -82,6 +82,17 @@ button:hover {
     /* padding: 50px; */
 }
 
+.loading {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #2E86AB;
+    font-weight: 600;
+    padding: 30px;
+    background: #f0f9ff;
+    border-radius: 12px;
+    margin: 20px 0;
+    transition: 0.2s ease;
+}
 .weather-icon {
     font-size: 2.5rem;
     padding-top: 20px;
@@ -203,4 +214,47 @@ button:hover {
 
 .second {
     color: gray;
+}
+
+
+/*Mobile view*/
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .weather-app {
+        width: 100%;
+        max-width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .input-section {
+        flex-direction: column;
+    }
+
+    input {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    button {
+        width: 30%;
+        font-size: 16px;
+    }
+
+    .weather {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .humidity, .wind, .uv {
+    display: flex;
+    justify-content: space-between;
+}
+    .days {
+        flex-direction: column;
+    }
 }

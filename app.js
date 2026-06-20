@@ -4,6 +4,7 @@ const hero = document.querySelector('.hero')
 const weatherDisplay = document.querySelector('.weather')
 const forcast = document.querySelector('.forcast')
 const forecastDaysContainer = document.querySelector('.forcast-days')
+const loadingState = document.querySelector('.loading')
 
 // Targeting the existing empty <p> elements in the HTML structure
 const humidityDisplay = document.querySelector('.humidityDisplay')
@@ -17,10 +18,13 @@ searchBtn.addEventListener('click', async () => {
 
     if(city) {
         try {
+            showLoading()
             const weatherData = await getWeatherData(city)
             displayWeatherInfo(weatherData)
+            hideLoading()
         }
         catch (error) {
+            hideLoading()
             displayError(error.message)
         }
     }else {
@@ -28,6 +32,19 @@ searchBtn.addEventListener('click', async () => {
     }
 })
 
+//Function to show loading...
+function showLoading () {
+    loadingState.style.display = 'block';
+    hero.style.display = 'none';          
+    weatherDisplay.style.display = 'none'; 
+    forcast.style.display = 'none';
+    forecastDaysContainer.style.display = 'none';
+}
+
+//Function to hide loading...
+function hideLoading () {
+    loadingState.style.display = 'none';
+}
 //Get Weather Data from API
 async function getWeatherData(city) {
     const apiURL = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en&format=json`
@@ -199,6 +216,7 @@ return outputstring
 
 //Function for displaying error message 
 function displayError (message) {
+hideLoading()
 const errorMessage = document.createElement('p')
 errorMessage.textContent = message
 hero.textContent = ''
@@ -209,59 +227,70 @@ hero.appendChild(errorMessage)
 
 // Automatically run when the page loads
 window.addEventListener('load', () => {
+
+    //Setting default city on page load
+    const defaultCity = "Lagos"
+
+    //Show the loading page immediately on pageload
+    showLoading()
+
     // Check if the browser supports Geolocation
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (position) => {
             // Success! Grab latitude and longitude
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
+            const lat = position.coords.latitude
+            const lon = position.coords.longitude
 
             try {
                 // Fetch and display local weather
-                await getLocalWeatherData(lat, lon);
+                await getLocalWeatherData(lat, lon)
+                hideLoading()
             } catch (error) {
+                hideLoading()
                 displayError("Could not fetch weather for your current location.");
             }
         }, (error) => {
             // If user denies permission, or location fails
-            console.log("Geolocation rejected or failed:", error.message);
-            // Optional: You can display a default city here like 'Lagos' if you want
+            hideLoading()
+            console.log("Geolocation rejected or failed:", error.message)
         });
     } else {
-        console.log("Geolocation is not supported by this browser.");
+        console.log("Geolocation not supported. Loading default city:", defaultCity)
+        hideLoading()
+        loadDefaultCity()
     }
 });
 
 async function getLocalWeatherData(latitude, longitude) {
-    let cityName = "Your Location";
-    let countryName = "Local";
+    let cityName = "Your Location"
+    let countryName = "Local"
 
     try {
         // 1. Ask Open-Meteo's reverse geocoding API what city matches these coordinates
-        const reverseGeocodeURL = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
+        const reverseGeocodeURL = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
         
-        const geoResponse = await fetch(reverseGeocodeURL);
+        const geoResponse = await fetch(reverseGeocodeURL)
         if (geoResponse.ok) {
-            const geoData = await geoResponse.json();
+            const geoData = await geoResponse.json()
             
             // Extract city/town/village and country safely from the address object
             const address = geoData.address;
-            cityName = address.city || address.town || address.village || "Unknown City";
-            countryName = address.country || "";
+            cityName = address.city || address.town || address.village || "Unknown City"
+            countryName = address.country || ""
         }
     } catch (e) {
-        console.log("Could not reverse-geocode coordinates, falling back to default labels.");
+        console.log("Could not reverse-geocode coordinates, falling back to default labels.")
     }
 
     // 2. Fetch the weather data just like before
-    const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,uv_index,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto`;
+    const weatherURL = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,uv_index,weather_code&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto`
 
-    const result = await fetch(weatherURL);
+    const result = await fetch(weatherURL)
     if (!result.ok) {
-        throw new Error('Could not fetch weather data');
+        throw new Error('Could not fetch weather data')
     }
     
-    const finalWeatherData = await result.json();
+    const finalWeatherData = await result.json()
 
     // 3. Put the REAL city and country names we just looked up into our simulated mask
     const simulatedData = {
@@ -274,5 +303,15 @@ async function getLocalWeatherData(latitude, longitude) {
     };
 
     // 4. Send it off to your original display function!
-    displayWeatherInfo(simulatedData);
+    displayWeatherInfo(simulatedData)
+}
+
+async function loadDefaultCity(defaultCity) {
+    try {
+        // Reuses the exact search pipeline you already built!
+        const weatherData = await getWeatherData(defaultCity);
+        displayWeatherInfo(weatherData);
+    } catch (error) {
+        displayError(`Could not load default city weather: ${error.message}`);
+    }
 }
